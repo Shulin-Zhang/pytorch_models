@@ -97,36 +97,47 @@ class Resnet(nn.Module):
             nn.BatchNorm2d(64),
             activation,
 
-            nn.Conv2d(64, 64, 3, stride=2, padding=1),
+            nn.Conv2d(64, 64, 2, stride=2, padding=1),
+            nn.BatchNorm2d(64),
+            activation,
+
+            nn.Conv2d(64, 64, 3, padding=1),
+            nn.BatchNorm2d(64),
+            activation,
+
+            nn.Conv2d(64, 64, 3, padding=1),
             nn.BatchNorm2d(64),
             activation,
         )
 
         self.layer2 = nn.Sequential(
             Conv_block(64, [64, 64, 256], activation),
-            Identity_block(64, [64, 64, 256], activation),
-            Identity_block(64, [64, 64, 256], activation),
+            Identity_block(256, [64, 64, 256], activation),
+            Identity_block(256, [64, 64, 256], activation),
         )
 
         self.layer3 = nn.Sequential(
-            Conv_block(128, [128, 128, 512], activation),
-            Identity_block(128, [128, 128, 512], activation),
-            Identity_block(128, [128, 128, 512], activation),
+            Conv_block(256, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
         )
 
         self.layer4 = nn.Sequential(
-            Conv_block(256, [256, 256, 1024], activation),
-            Identity_block(256, [256, 256, 1024], activation),
-            Identity_block(256, [256, 256, 1024], activation),
+            Conv_block(512, [256, 256, 1024], activation),
+            Identity_block(1024, [256, 256, 1024], activation),
+            Identity_block(1024, [256, 256, 1024], activation),
+            Identity_block(1024, [256, 256, 1024], activation),
         )
 
         self.layer5 = nn.Sequential(
-            Conv_block(512, [512, 512, 2048], activation),
-            Identity_block(512, [512, 512, 2048], activation),
-            Identity_block(512, [512, 512, 2048], activation),
+            Conv_block(1024, [512, 512, 2048], activation),
+            Identity_block(2048, [512, 512, 2048], activation),
+            Identity_block(2048, [512, 512, 2048], activation),
         )
 
         self.global_avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.flatten = nn.Flatten()
         self.fc = nn.Linear(2048, class_num)
 
         self.init_weights()
@@ -146,6 +157,7 @@ class Resnet(nn.Module):
         x = self.layer4(x)
         x = self.layer5(x)
         x = self.global_avg_pool(x)
+        x = self.flatten(x)
         x = self.fc(x)
 
         return x
