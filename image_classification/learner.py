@@ -34,7 +34,7 @@ class Learner:
                 loss = loss_fn(outputs, labels)
                 optimizer.zero_grad()
                 loss.backward()
-                lr_scheduler.step()
+                lr_scheduler.step(loss)
 
                 if step % print_steps == print_steps - 1:
                     print(f"epoch: {epoch + 1}    \tstep: {step + 1}    \tloss: {loss:.4f}")
