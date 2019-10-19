@@ -31,7 +31,7 @@ class Learner:
                     imgs, labels = imgs.to('cuda'), labels.to('cuda')
 
                 outputs = self.model(imgs)
-                loss = loss_fn(imgs, labels)
+                loss = loss_fn(outputs, labels)
                 lr_scheduler.zero_grad()
                 loss.backward()
                 lr_scheduler.step()
