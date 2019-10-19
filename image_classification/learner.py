@@ -6,6 +6,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.optim.lr_scheduler as lr_scheduler
 
 
 class Learner:
@@ -21,9 +22,8 @@ class Learner:
         loss_fn = nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr, momentum=0.9,
                               weight_decay=weight_decay, nesterov=True)
-        lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer,
-                                                            mode='min',
-                                                            verbose=True)
+        scheduler = lr_scheduler.OneCycleLR(optimizer, lr, epochs=epochs,
+                                            steps_per_epoch=len(dataloader))
 
         for epoch in range(epochs):
             for step, (imgs, labels) in enumerate(dataloader):
@@ -34,7 +34,8 @@ class Learner:
                 loss = loss_fn(outputs, labels)
                 optimizer.zero_grad()
                 loss.backward()
-                lr_scheduler.step(loss)
+                optimizer.step()
+                scheduler.step()
 
                 if step % print_steps == print_steps - 1:
                     print(f"epoch: {epoch + 1}    \tstep: {step + 1}    \tloss: {loss:.4f}")
