@@ -97,14 +97,6 @@ class Resnet(nn.Module):
             nn.BatchNorm2d(64),
             activation,
 
-            nn.Conv2d(64, 64, 2, stride=2, padding=1),
-            nn.BatchNorm2d(64),
-            activation,
-
-            nn.Conv2d(64, 64, 3, padding=1),
-            nn.BatchNorm2d(64),
-            activation,
-
             nn.Conv2d(64, 64, 3, padding=1),
             nn.BatchNorm2d(64),
             activation,
@@ -130,12 +122,6 @@ class Resnet(nn.Module):
             Identity_block(1024, [256, 256, 1024], activation),
         )
 
-        self.layer5 = nn.Sequential(
-            Conv_block(1024, [512, 512, 2048], activation),
-            Identity_block(2048, [512, 512, 2048], activation),
-            Identity_block(2048, [512, 512, 2048], activation),
-        )
-
         self.global_avg_pool = nn.AdaptiveAvgPool2d(1)
         self.flatten = nn.Flatten()
         self.fc = nn.Linear(2048, class_num)
@@ -155,7 +141,6 @@ class Resnet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        x = self.layer5(x)
         x = self.global_avg_pool(x)
         x = self.flatten(x)
         x = self.fc(x)
