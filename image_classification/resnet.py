@@ -122,9 +122,9 @@ class Resnet(nn.Module):
             Identity_block(1024, [256, 256, 1024], activation),
         )
 
-        self.global_avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(2048, class_num)
+        self.fc = nn.Linear(1024, class_num)
 
         self.init_weights()
 
