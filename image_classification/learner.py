@@ -32,7 +32,7 @@ class Learner:
 
                 outputs = self.model(imgs)
                 loss = loss_fn(outputs, labels)
-                lr_scheduler.zero_grad()
+                optimizer.zero_grad()
                 loss.backward()
                 lr_scheduler.step()
 
