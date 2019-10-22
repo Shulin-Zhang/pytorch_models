@@ -57,5 +57,3 @@ class Learner:
                 total += imgs.size(0)
 
         return corrects / total
-
-

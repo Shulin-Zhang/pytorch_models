@@ -11,8 +11,8 @@ from torch.utils.data import DataLoader
 
 def build_minist_transforms():
     train_transform = transforms.Compose([
-        transforms.Pad(3),
-        transforms.RandomResizedCrop((28, 28), scale=(0.9, 1.0),
+        transforms.Pad(4),
+        transforms.RandomResizedCrop((28, 28), scale=(0.8, 1.0),
                                      ratio=(0.9, 1.1)),
         transforms.RandomRotation(10),
         transforms.ColorJitter(brightness=0.05, contrast=0.05),

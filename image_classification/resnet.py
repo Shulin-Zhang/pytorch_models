@@ -106,10 +106,14 @@ class Resnet(nn.Module):
             Conv_block(64, [64, 64, 256], activation),
             Identity_block(256, [64, 64, 256], activation),
             Identity_block(256, [64, 64, 256], activation),
+            Identity_block(256, [64, 64, 256], activation),
         )
 
         self.layer3 = nn.Sequential(
             Conv_block(256, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
+            Identity_block(512, [128, 128, 512], activation),
             Identity_block(512, [128, 128, 512], activation),
             Identity_block(512, [128, 128, 512], activation),
             Identity_block(512, [128, 128, 512], activation),
