@@ -74,6 +74,8 @@ class Lr_finder:
             x = np.array(history_lr).mean(axis=0)
             y = np.array(history_loss).mean(axis=0)
             plt.plot(x, y)
+        else:
+            return history_loss, history_lr
 
     def lr_scheduler(self, step, steps, lr_range):
         exp = np.log10(lr_range[0])
