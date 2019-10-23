@@ -67,7 +67,6 @@ class Lr_finder:
 
         if plot:
             plt.xscale('log')
-            plt.yscale('log')
             plt.xlabel('lr')
             plt.ylabel('loss')
             plt.title('loss_lr curve')
