@@ -22,7 +22,7 @@ class Lr_finder:
         self.loss_fn = loss_fn
 
     def lr_find(self, steps=100, repeat=5, lr_range=(1e-4, 10), plot=True):
-        model.train()
+        self.model.train()
 
         old_state = self.model.state_dict()
 
