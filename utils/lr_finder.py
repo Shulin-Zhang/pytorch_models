@@ -11,8 +11,7 @@ import matplotlib
 
 
 class Lr_finder:
-    def __init__(self, model, dataloader, loss_fn,
-                 optimizer=optim.SGD(model.parameters(), 0.1)):
+    def __init__(self, model, dataloader, loss_fn, optimizer):
         if torch.cuda.is_available():
             self.model = model.to('cuda')
         else:
