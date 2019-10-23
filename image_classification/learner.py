@@ -40,7 +40,7 @@ class Learner:
                 scheduler.step()
 
                 if step % print_steps == print_steps - 1:
-                    history_loss.append(loss)
+                    history_loss.append(loss.item())
                     history_steps.append(epoch * len(dataloader) + step + 1)
                     print(f"epoch: {epoch + 1}    \tstep: {step + 1}    \tloss: {loss:.4f}")
 
