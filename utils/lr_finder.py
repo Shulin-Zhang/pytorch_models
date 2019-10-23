@@ -3,6 +3,7 @@
 # 2019-10-19
 
 
+import copy
 import torch
 import torch.optim as optim
 import numpy as np
@@ -24,7 +25,7 @@ class Lr_finder:
     def lr_find(self, steps=100, repeat=5, lr_range=(1e-4, 10), plot=True):
         self.model.train()
 
-        old_state = self.model.state_dict()
+        old_state = copy.deepcopy(self.model.state_dict())
 
         history_loss = []
         history_lr = []
@@ -64,16 +65,17 @@ class Lr_finder:
             history_loss.append(losses)
             history_lr.append(lrs)
 
+        x = np.array(history_lr).mean(axis=0)
+        y = np.array(history_loss).mean(axis=0)
+
         if plot:
             plt.xscale('log')
             plt.xlabel('lr')
             plt.ylabel('loss')
             plt.title('loss_lr curve')
-            x = np.array(history_lr).mean(axis=0)
-            y = np.array(history_loss).mean(axis=0)
             plt.plot(x, y)
         else:
-            return history_loss, history_lr
+            return x, y
 
     def lr_scheduler(self, step, steps, lr_range):
         exp = np.log10(lr_range[0])
