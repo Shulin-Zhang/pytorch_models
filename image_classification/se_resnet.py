@@ -19,14 +19,14 @@ class SE_layer(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        x = self.globalAvgPool(x)
-        x = self.flatten(x)
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        x = self.sigmoid(x)
+        out = self.globalAvgPool(x)
+        out = self.flatten(x)
+        out = self.fc1(x)
+        out = self.relu(x)
+        out = self.fc2(x)
+        out = self.sigmoid(x)
 
-        return x
+        return x * out
 
 
 class Identity_block(nn.Module):
