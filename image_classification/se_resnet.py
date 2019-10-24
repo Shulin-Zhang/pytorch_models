@@ -11,7 +11,7 @@ import torch.nn.functional as F
 class SE_layer(nn.Module):
     def __init__(self, in_channel, reduction=16):
         super().__init__()
-        self.globalAvgPool = nn.AdaptiveAvgPool2d(1)
+        self.globalAvgPool = nn.AdaptiveAvgPool2d((1, 1))
         self.flatten = nn.Flatten()
         self.fc1 = nn.Linear(in_channel, in_channel // reduction)
         self.relu = nn.ReLU(True)
@@ -20,13 +20,13 @@ class SE_layer(nn.Module):
 
     def forward(self, x):
         out = self.globalAvgPool(x)
-        out = self.flatten(x)
-        out = self.fc1(x)
-        out = self.relu(x)
-        out = self.fc2(x)
-        out = self.sigmoid(x)
+        out = self.flatten(out)
+        out = self.fc1(out)
+        out = self.relu(out)
+        out = self.fc2(out)
+        out = self.sigmoid(out)
 
-        return x * out
+        return x * out.view((out.size(0), out.size(1), 1, 1))
 
 
 class Identity_block(nn.Module):
