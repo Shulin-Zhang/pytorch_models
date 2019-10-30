@@ -9,7 +9,8 @@ import torch.nn.functional as F
 
 
 class Identity_block(nn.Module):
-    def __init__(self, in_channel, channels, activation=nn.ReLU(True)):
+    def __init__(self, in_channel, channels, activation=nn.ReLU(True),
+                 dropout=0):
         super().__init__()
 
         self.conv1 = nn.Conv2d(in_channel, channels[0], 1)
@@ -19,6 +20,7 @@ class Identity_block(nn.Module):
         self.conv3 = nn.Conv2d(channels[1], channels[2], 1)
         self.bn3 = nn.BatchNorm2d(channels[2])
         self.activation = activation
+        self.dropout = nn.Dropout2d(dropout)
 
     def forward(self, x):
         shortcut = x
@@ -37,12 +39,14 @@ class Identity_block(nn.Module):
         x = x + shortcut
 
         x = self.activation(x)
+        x = self.dropout(x)
 
         return x
 
 
 class Conv_block(nn.Module):
-    def __init__(self, in_channel, channels, activation=nn.ReLU(True)):
+    def __init__(self, in_channel, channels, activation=nn.ReLU(True),
+                 dropout=0):
         super().__init__()
 
         self.max_pool = nn.MaxPool2d(2, 2)
@@ -58,6 +62,7 @@ class Conv_block(nn.Module):
         self.bn_shortcut = nn.BatchNorm2d(channels[2])
 
         self.activation = activation
+        self.dropout = nn.Dropout2d(dropout)
 
     def forward(self, x):
         x = self.max_pool(x)
@@ -80,12 +85,14 @@ class Conv_block(nn.Module):
         x = x + shortcut
 
         x = self.activation(x)
+        x = self.dropout(x)
 
         return x
 
 
 class Resnet(nn.Module):
-    def __init__(self, class_num, in_channel=3, activation=nn.ReLU(True)):
+    def __init__(self, class_num, in_channel=3, activation=nn.ReLU(True),
+                 dropout=0):
         super().__init__()
 
         self.layer1 = nn.Sequential(
@@ -103,27 +110,27 @@ class Resnet(nn.Module):
         )
 
         self.layer2 = nn.Sequential(
-            Conv_block(64, [64, 64, 256], activation),
-            Identity_block(256, [64, 64, 256], activation),
-            Identity_block(256, [64, 64, 256], activation),
-            Identity_block(256, [64, 64, 256], activation),
+            Conv_block(64, [64, 64, 256], activation, dropout),
+            Identity_block(256, [64, 64, 256], activation, dropout),
+            Identity_block(256, [64, 64, 256], activation, dropout),
+            Identity_block(256, [64, 64, 256], activation, dropout),
         )
 
         self.layer3 = nn.Sequential(
-            Conv_block(256, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
-            Identity_block(512, [128, 128, 512], activation),
+            Conv_block(256, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
+            Identity_block(512, [128, 128, 512], activation, dropout),
         )
 
         self.layer4 = nn.Sequential(
-            Conv_block(512, [256, 256, 1024], activation),
-            Identity_block(1024, [256, 256, 1024], activation),
-            Identity_block(1024, [256, 256, 1024], activation),
-            Identity_block(1024, [256, 256, 1024], activation),
+            Conv_block(512, [256, 256, 1024], activation, dropout),
+            Identity_block(1024, [256, 256, 1024], activation, dropout),
+            Identity_block(1024, [256, 256, 1024], activation, dropout),
+            Identity_block(1024, [256, 256, 1024], activation, dropout),
         )
 
         self.global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
