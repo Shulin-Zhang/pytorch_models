@@ -81,3 +81,7 @@ class Lr_finder:
         exp = np.log10(lr_range[0])
         exp += (step / (steps - 1)) * (np.log10(lr_range[1] / lr_range[0]))
         return np.power(10, exp)
+
+    def exp_lr_scheduler(self, step, steps, lr_range):
+        pct = step / (steps - 1)
+        return lr_range[0] * (lr_range[1] / lr_range[0]) ** pct
