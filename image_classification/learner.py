@@ -5,6 +5,7 @@
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 
@@ -63,3 +64,18 @@ class Learner:
                 total += imgs.size(0)
 
         return corrects / total
+
+    def predict(self, dataloader):
+        self.model.eval()
+        predictions = []
+
+        with torch.no_grad():
+            for imgs, labels in dataloader:
+                if torch.cuda.is_available():
+                    imgs, labels = imgs.to('cuda'), labels.to('cuda')
+
+                outputs = self.model(imgs)
+                batch_predictions = F.softmax(outputs)
+                predictions.append(batch_predictions)
+
+        return torch.stack(predictions)
