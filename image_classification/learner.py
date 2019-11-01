@@ -5,9 +5,9 @@
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
+import numpy as np
 
 
 class Learner:
@@ -68,14 +68,14 @@ class Learner:
     def predict(self, dataloader):
         self.model.eval()
         predictions = []
+        softmax = nn.Softmax(dim=0)
 
         with torch.no_grad():
             for imgs, labels in dataloader:
                 if torch.cuda.is_available():
-                    imgs, labels = imgs.to('cuda'), labels.to('cuda')
-
+                    imgs, labels = imgs.to('cuda'), labels.to('cuda')  
                 outputs = self.model(imgs)
-                batch_predictions = F.softmax(outputs)
-                predictions.append(batch_predictions)
+                batch_predictions = softmax(outputs)
+                predictions.append(batch_predictions.cpu().numpy())
 
-        return torch.stack(predictions)
+        return np.concatenate(predictions)
