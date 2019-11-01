@@ -40,7 +40,7 @@ class Lr_finder:
                     if torch.cuda.is_available():
                         datas, labels = datas.to('cuda'), labels.to('cuda')
 
-                    lr = self.lr_scheduler(step, steps, lr_range)
+                    lr = self.exp_lr_scheduler(step, steps, lr_range)
                     self.optimizer.param_groups[0]['lr'] = lr
 
                     outputs = self.model(datas)
@@ -76,11 +76,6 @@ class Lr_finder:
             plt.plot(x, y)
         else:
             return x, y
-
-    def lr_scheduler(self, step, steps, lr_range):
-        exp = np.log10(lr_range[0])
-        exp += (step / (steps - 1)) * (np.log10(lr_range[1] / lr_range[0]))
-        return np.power(10, exp)
 
     def exp_lr_scheduler(self, step, steps, lr_range):
         pct = step / (steps - 1)
