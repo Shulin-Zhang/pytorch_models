@@ -12,10 +12,10 @@ from torch.utils.data import DataLoader
 def build_minist_transforms():
     train_transform = transforms.Compose([
         transforms.Pad(4),
-        transforms.RandomResizedCrop((28, 28), scale=(0.8, 1.0),
-                                     ratio=(0.9, 1.1)),
+        transforms.RandomResizedCrop((28, 28), scale=(0.8, 1.2),
+                                     ratio=(0.8, 1.2)),
         transforms.RandomRotation(10),
-        transforms.ColorJitter(brightness=0.05, contrast=0.05),
+        transforms.ColorJitter(brightness=0.1, contrast=0.1),
         transforms.ToTensor(),
         transforms.Lambda(lambda img: img / 255)
     ])
