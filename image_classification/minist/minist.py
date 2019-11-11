@@ -13,7 +13,7 @@ def build_minist_transforms():
     train_transform = transforms.Compose([
         transforms.Pad(4),
         transforms.RandomResizedCrop((28, 28), scale=(0.9, 1.1),
-                                     ratio=(0.9, 1.1)),
+                                     ratio=(0.8, 1.2)),
         transforms.RandomRotation(10),
         transforms.ColorJitter(brightness=0.1, contrast=0.1),
         transforms.ToTensor(),
