@@ -22,7 +22,7 @@ class Learner:
 
         loss_fn = nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr, momentum=0.9,
-                              weight_decay=weight_decay, nesterov=True)
+                              weight_decay=weight_decay, nesterov=False)
         scheduler = lr_scheduler.OneCycleLR(optimizer, lr, epochs=epochs,
                                             steps_per_epoch=len(dataloader))
 
@@ -73,7 +73,7 @@ class Learner:
         with torch.no_grad():
             for imgs, labels in dataloader:
                 if torch.cuda.is_available():
-                    imgs, labels = imgs.to('cuda'), labels.to('cuda')  
+                    imgs, labels = imgs.to('cuda'), labels.to('cuda') 
                 outputs = self.model(imgs)
                 batch_predictions = softmax(outputs)
                 predictions.append(batch_predictions.cpu().numpy())
