@@ -1,6 +1,6 @@
 # resnet对minist数据集进行分类
 
-### 实现resnet，resnext，senet
+### 实现resnet，resnext，senet. 用resnet进行分类。
 ### 训练集样本
 ![image](imgs/minist_pic.png)
 
