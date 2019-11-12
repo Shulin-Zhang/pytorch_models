@@ -1,7 +1,8 @@
 # resnet对minist数据集进行分类
 
-### 实现resent，resnext，senet
+### 实现resnet，resnext，senet
 ### 训练集样本
+![image](imgs/minist_pic.png)
 
 ### 用one-circle策略进行优化 (https://arxiv.org/abs/1708.07120)
 ### 实现lr_finder 寻找一个最大学习率
